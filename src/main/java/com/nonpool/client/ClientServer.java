@@ -25,8 +25,8 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 public class ClientServer {
 
     public static void main(String[] args) throws Exception {
-        String host = args[0];
-        int port = Integer.parseInt(args[1]);
+        String host = "localhost";//args[0];
+        int port = 9123;//Integer.parseInt(args[1]);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {

@@ -3,6 +3,7 @@ package com.nonpool.util;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.MessageLite;
 import com.nonpool.proto.Frame;
+import com.nonpool.proto.TextMessage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,6 +23,7 @@ public abstract class ParseFromUtil {
     private final static ConcurrentMap<String, Method> methodCache = new ConcurrentHashMap<>();
 
     static {
+        System.out.println("ParseFromUtil static");
         //找到指定包下所有protobuf实体类
         List<Class> classes = ClassUtil.getAllClassBySubClass(MessageLite.class, true, "com.nonpool.proto");
         classes.stream()
@@ -29,11 +31,19 @@ public abstract class ParseFromUtil {
                 .forEach(protoClass -> {
                     try {
                         //反射获取parseFrom方法并缓存到map
+                        System.out.println(protoClass.getSimpleName());
                         methodCache.put(protoClass.getSimpleName(), protoClass.getMethod("parseFrom", ByteString.class));
                     } catch (NoSuchMethodException e) {
                         throw new RuntimeException(e);
                     }
                 });
+        try {
+            Class textMessageClass=TextMessage.class;
+            System.out.println(textMessageClass.getSimpleName());
+            methodCache.put(textMessageClass.getSimpleName(), textMessageClass.getMethod("parseFrom", ByteString.class));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

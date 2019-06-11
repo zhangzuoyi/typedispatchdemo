@@ -2,6 +2,7 @@ package com.nonpool.util;
 
 import com.nonpool.annotation.HandlerMapping;
 import com.nonpool.server.customhandler.DataHandler;
+import com.nonpool.server.customhandler.TextMessageHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,8 @@ public abstract class HandlerUtil {
                 //以其HandlerMapping的value为key handler实例为value缓存到map中
                 instanceCache.put(annotation.value(), (DataHandler) claz.newInstance());
             }
+            Class textMessageHandler= TextMessageHandler.class;
+            instanceCache.put("TextMessage", (DataHandler) textMessageHandler.newInstance());
             System.out.println("handler init success handler Map: " +  instanceCache);
         } catch (Exception e) {
             e.printStackTrace();
